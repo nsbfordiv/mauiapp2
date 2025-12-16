@@ -17,6 +17,7 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<UseMonoRuntime>false</UseMonoRuntime>
 
 		<!-- Display name -->
 		<ApplicationTitle>MauiApp2</ApplicationTitle>

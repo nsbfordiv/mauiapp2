@@ -23,7 +23,6 @@ jobs:
 
       - name: Restore MAUI workloads
         run: dotnet workload restore .\MauiApp2\MauiApp2.csproj
-
       - name: Restore
         run: dotnet restore .\MauiApp2\MauiApp2.csproj -r win-x64
 
