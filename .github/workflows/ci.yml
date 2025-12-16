@@ -26,7 +26,8 @@ jobs:
 
       - name: Restore (Windows only)
         run: dotnet restore .\MauiApp2\MauiApp2.csproj -f net10.0-windows10.0.19041.0
-
+        
       - name: Build (Windows)
-        run: dotnet build .\MauiApp2\MauiApp2.csproj -c Release -f net10.0-windows10.0.19041.0
+        run: dotnet build .\MauiApp2\MauiApp2.csproj -c Release --framework net10.0-windows10.0.19041.0
+
 
