@@ -1,16 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace MauiApp2;
+﻿namespace MauiApp2;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
-	}
+    private readonly AppShell _appShell;
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new AppShell());
-	}
+    public App(AppShell appShell)
+    {
+        InitializeComponent();
+        _appShell = appShell;
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+        => new Window(_appShell);
 }

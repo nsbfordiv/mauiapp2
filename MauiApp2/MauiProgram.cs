@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using MauiApp2.Services;
+
 
 namespace MauiApp2;
 
@@ -7,8 +9,19 @@ public static class MauiProgram
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine("UnhandledException: " + e.ExceptionObject);
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine("UnobservedTaskException: " + e.Exception);
+            e.SetObserved();
+        };
+
+        builder
+            .UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,6 +32,12 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
+	builder.Services.AddSingleton<MsalClientService>();
+	builder.Services.AddSingleton<MainPage>();
+	builder.Services.AddSingleton<AppShell>();
+    builder.Services.AddTransient<MainPage>();
+
+
+        return builder.Build();
 	}
 }

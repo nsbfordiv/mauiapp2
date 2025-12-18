@@ -6,9 +6,19 @@
     xmlns:local="clr-namespace:MauiApp2"
     Title="MauiApp2">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Home" Route="home">
+        <ShellContent
+            Title="Home"
+            Route="MainPage"
+            ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+    <!-- 
+    <FlyoutItem Title="Profile" Route="profile">
+        <ShellContent
+            Title="Profile"
+            Route="ProfilePage" 
+            ContentTemplate="{DataTemplate local:ProfilePage}" />
+    </FlyoutItem>
+    -->
 
 </Shell>
