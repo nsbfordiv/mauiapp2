@@ -38,6 +38,7 @@ public static class MauiProgram
     builder.Services.AddTransient<MainPage>();
 
 
+
         return builder.Build();
 	}
 }

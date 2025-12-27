@@ -42,7 +42,7 @@ public partial class MainPage : ContentPage
 
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            SignInToolbarItem.Text = acct is null ? "Sign in" : acct.Username; // fallback
+            
         });
     }
 
@@ -73,14 +73,14 @@ public partial class MainPage : ContentPage
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                SignInToolbarItem.Text = who;
+              
             });
         }
         catch (MsalException ex)
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                SignInToolbarItem.Text = "Sign in"; // or show error text if you want
+              
             });
         }
     }

@@ -13,6 +13,7 @@
     <!-- Optional: logo in the top bar -->
     <Shell.TitleView>
         <Grid Padding="8" VerticalOptions="Center" ColumnDefinitions="Auto,*,Auto">
+
             <!-- Current page title (left) -->
             <Label Grid.Column="0"
                VerticalOptions="Center"
@@ -24,18 +25,17 @@
                Text="{Binding Source={RelativeSource AncestorType={x:Type Shell}},
                               Path=CurrentItem.CurrentItem.Title}" />
 
-            <!-- Logo (center-ish)
-            <Image Grid.Column="1"
-               Source="cw_full.png"
-               HeightRequest="28"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"
-               Aspect="AspectFit" />
-    -->
-            <!-- spacer to help keep logo centered -->
-            <BoxView Grid.Column="2" WidthRequest="1" Opacity="0" />
+            <!-- Username (right) -->
+            <Label Grid.Column="2"
+                Text="{Binding SignedInUser}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AccountTapCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
         </Grid>
     </Shell.TitleView>
+
 
 
     <!-- Flyout item text styling -->

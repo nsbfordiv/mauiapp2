@@ -5,15 +5,6 @@
     x:Class="MauiApp2.MainPage"
     Title="Home">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem
-            x:Name="SignInToolbarItem"
-            Text="Sign in"
-            Clicked="OnSignInClicked"
-            Order="Primary"
-            Priority="0" />
-    </ContentPage.ToolbarItems>
-
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
 
