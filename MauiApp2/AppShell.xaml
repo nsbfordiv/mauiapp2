@@ -4,7 +4,65 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp2"
-    Title="MauiApp2">
+    Title="MauiApp2"
+    Shell.BackgroundColor="#BE3338"
+    Shell.ForegroundColor="{DynamicResource BrandText}"
+    Shell.TitleColor="{DynamicResource BrandText}"
+    Shell.FlyoutBackgroundColor="{DynamicResource BrandSurface}">
+
+    <!-- Optional: logo in the top bar -->
+    <Shell.TitleView>
+        <Grid Padding="8" VerticalOptions="Center" ColumnDefinitions="Auto,*,Auto">
+            <!-- Current page title (left) -->
+            <Label Grid.Column="0"
+               VerticalOptions="Center"
+               Margin="0,0,12,0"
+               FontSize="18"
+               FontAttributes="Bold"
+               LineBreakMode="TailTruncation"
+               TextColor="{DynamicResource BrandText}"
+               Text="{Binding Source={RelativeSource AncestorType={x:Type Shell}},
+                              Path=CurrentItem.CurrentItem.Title}" />
+
+            <!-- Logo (center-ish)
+            <Image Grid.Column="1"
+               Source="cw_full.png"
+               HeightRequest="28"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               Aspect="AspectFit" />
+    -->
+            <!-- spacer to help keep logo centered -->
+            <BoxView Grid.Column="2" WidthRequest="1" Opacity="0" />
+        </Grid>
+    </Shell.TitleView>
+
+
+    <!-- Flyout item text styling -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="12,10">
+                <Label x:Name="FlyoutTitle"
+                       Text="{Binding Title}"
+                       FontSize="16"
+                       TextColor="{DynamicResource BrandText}" />
+
+                <!-- Selected state styling -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal" />
+                        <VisualState Name="Selected">
+                            <VisualState.Setters>
+                                <Setter TargetName="FlyoutTitle"
+                                        Property="Label.TextColor"
+                                        Value="{DynamicResource BrandPrimary}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
 
     <FlyoutItem Title="Home" Route="home">
         <ShellContent
@@ -12,13 +70,5 @@
             Route="MainPage"
             ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
-    <!-- 
-    <FlyoutItem Title="Profile" Route="profile">
-        <ShellContent
-            Title="Profile"
-            Route="ProfilePage" 
-            ContentTemplate="{DataTemplate local:ProfilePage}" />
-    </FlyoutItem>
-    -->
 
 </Shell>

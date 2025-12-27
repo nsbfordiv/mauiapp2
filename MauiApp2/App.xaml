@@ -5,10 +5,42 @@
              x:Class="MauiApp2.App">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Brand -->
+            <Color x:Key="BrandPrimary">#1E5AA8</Color>
+            <Color x:Key="BrandSurface">#0B1220</Color>
+            <Color x:Key="BrandText">#FFFFFF</Color>
+
+            <!-- Global page background -->
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{DynamicResource BrandSurface}" />
+            </Style>
+
+            <!-- Buttons -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{DynamicResource BrandPrimary}" />
+                <Setter Property="TextColor" Value="{DynamicResource BrandText}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="14,12" />
+            </Style>
+
+            <!-- Labels -->
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource BrandText}" />
+            </Style>
+
+            <Style x:Key="Headline" TargetType="Label">
+                <Setter Property="FontSize" Value="28" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{DynamicResource BrandText}" />
+            </Style>
+
+            <Style x:Key="SubHeadline" TargetType="Label">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="{DynamicResource BrandText}" />
+                <Setter Property="Opacity" Value="0.85" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

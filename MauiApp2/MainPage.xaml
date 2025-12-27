@@ -17,6 +17,12 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
 
+            <!-- Logo -->
+            <Image Source="cw_full.png"
+                   HeightRequest="60"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit" />
+
             <Image Source="dotnet_bot.png"
                    HeightRequest="185"
                    Aspect="AspectFit" />
