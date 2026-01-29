@@ -4,12 +4,23 @@ using System.Linq;
 using Microsoft.Maui.ApplicationModel;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace MauiApp2;
-
 public partial class MainPage : ContentPage
 {
     private readonly MsalClientService _msal;
+
+    public MainPage() : this(CurrentServices.GetRequiredService<MsalClientService>())
+    {
+    }
+
+    private static IServiceProvider CurrentServices =>
+        Application.Current?.Handler?.MauiContext?.Services
+        ?? throw new InvalidOperationException("Services not available yet.");
+
 
     public MainPage(MsalClientService msal)
     {
@@ -45,13 +56,30 @@ public partial class MainPage : ContentPage
             
         });
     }
+    private void OnCounterClicked(object sender, EventArgs e)
+    {
+        // whatever you want
+    }
 
     private int _count = 0;
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private async void OnGetApiTokenClicked(object sender, EventArgs e)
     {
-        _count++;
-        ((Button)sender).Text = $"Clicked {_count} times";
+        try
+        {
+            var token = await _msal.GetApiAccessTokenAsync(); // notes.read token
+
+            await Clipboard.SetTextAsync(token);
+
+            await this.DisplayAlertAsync(
+                "Token copied",
+                "API access token copied to clipboard. Paste into Swagger > Authorize.",
+                "OK");
+        }
+        catch (Exception ex)
+        {
+            await this.DisplayAlertAsync("Token error", ex.Message, "OK");
+        }
     }
 
 

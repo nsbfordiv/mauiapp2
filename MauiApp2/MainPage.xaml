@@ -29,6 +29,10 @@
                 Text="Click me"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
+            
+            <Button Text="Get API Token (copy)"
+                Clicked="OnGetApiTokenClicked" />
+
 
         </VerticalStackLayout>
     </ScrollView>

@@ -9,7 +9,18 @@ public class MsalClientService
 {
     public IPublicClientApplication PCA { get; }
 
-    private static readonly string[] Scopes = new[] { "User.Read" };
+    private static readonly string[] GraphScopes = new[] { "User.Read" };
+
+    private static readonly string[] ApiReadScopes = new[]
+    {
+    "api://b825c934-6ebb-4af3-9153-7f4c2bdaaf24/notes.read"
+};
+
+    private static readonly string[] ApiWriteScopes = new[]
+    {
+    "api://b825c934-6ebb-4af3-9153-7f4c2bdaaf24/notes.write"
+};
+
 
     public MsalClientService()
     {
@@ -52,7 +63,7 @@ public class MsalClientService
         try
         {
             var result = await PCA
-                .AcquireTokenSilent(Scopes, account)
+                .AcquireTokenSilent(GraphScopes, account)
                 .ExecuteAsync()
                 .ConfigureAwait(false);
 
@@ -70,6 +81,36 @@ public class MsalClientService
 
         return LocalPart(upn);
     }
+
+    public async Task<string> GetApiAccessTokenAsync(bool write = false)
+    {
+        var scopes = write ? ApiWriteScopes : ApiReadScopes;
+
+        var account = (await PCA.GetAccountsAsync().ConfigureAwait(false)).FirstOrDefault()
+            ?? throw new InvalidOperationException("No signed-in account found.");
+
+        try
+        {
+            var result = await PCA
+                .AcquireTokenSilent(scopes, account)
+                .ExecuteAsync()
+                .ConfigureAwait(false);
+
+            return result.AccessToken;
+        }
+        catch (MsalUiRequiredException)
+        {
+            var builder = PCA.AcquireTokenInteractive(scopes);
+
+#if ANDROID
+            builder = builder.WithParentActivityOrWindow(Platform.CurrentActivity);
+#endif
+
+            var result = await builder.ExecuteAsync().ConfigureAwait(false);
+            return result.AccessToken;
+        }
+    }
+
 
     private static string LocalPart(string upn)
     {
@@ -98,22 +139,19 @@ public class MsalClientService
     }
     public async Task<AuthenticationResult> SignInInteractiveAsync(bool forcePrompt = false)
     {
-        var builder = PCA.AcquireTokenInteractive(Scopes);
+        var scopes = GraphScopes.Concat(ApiReadScopes).ToArray();
+        var builder = PCA.AcquireTokenInteractive(scopes);
 
 #if ANDROID
         builder = builder.WithParentActivityOrWindow(Platform.CurrentActivity);
 #endif
 
         if (forcePrompt)
-        {
-            // Better for testing than ForceLogin; it makes the user pick an account
             builder = builder.WithPrompt(Prompt.SelectAccount);
-            // If you truly want a password prompt every time, use:
-            // builder = builder.WithPrompt(Prompt.ForceLogin);
-        }
 
         return await builder.ExecuteAsync().ConfigureAwait(false);
     }
+
 
 
     public async Task SignOutAsync()
