@@ -15,7 +15,6 @@ jobs:
     defaults:
       run:
         shell: pwsh
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,18 +35,27 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
+      # Align workloads with SDK feature band
       - name: Update workloads
         run: dotnet workload update
 
+      # Install Windows + Android so Mono runtime packs are available
       - name: Install MAUI workloads
-        run: dotnet workload install maui maui-windows
+        run: dotnet workload install maui maui-windows maui-android
 
+      # Add Microsoft’s public feed where some .NET 10 packs live
       - name: Add dotnet-public feed
         run: dotnet nuget add source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json --name dotnet-public --store-password-in-clear-text
 
+      # (Optional but helpful) restore workload-defined packs referenced by the project
+      - name: Workload restore (project)
+        run: dotnet workload restore .\MauiApp2\MauiApp2.csproj
+
+      # Restore ONLY the Windows TFM/RID using MSBuild properties
       - name: Restore (Windows target only)
         run: dotnet restore .\MauiApp2\MauiApp2.csproj -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
 
+      # Build WITHOUT --no-restore so MSBuild can fetch any missing runtime pack
       - name: Build (Windows)
         run: dotnet build .\MauiApp2\MauiApp2.csproj -c Release -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
 
