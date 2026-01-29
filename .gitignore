@@ -1,5 +1,32 @@
-**/bin/
-**/obj/
-*.user
-*.suo
+# Build outputs
+bin/
+obj/
+
+# VS/IDE
 .vs/
+*.user
+*.userosscache
+*.suo
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# MAUI specific artifacts (platform builds)
+**/Platforms/Android/*/build/
+**/Platforms/iOS/build/
+**/Platforms/MacCatalyst/build/
+**/Platforms/Tizen/build/
+**/Platforms/Windows/AppX/
+**/Platforms/Windows/bin/
+**/Platforms/Windows/obj/
+
+# Logs
+*.log
+
+# If Cw.Notes.Api is NOT meant for source control, ignore it:
+# Cw.Notes.Api/
