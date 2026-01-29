@@ -26,10 +26,7 @@ jobs:
           dotnet-version: "10.0.102"
 
       - name: Diagnostics
-        run: |
-          dotnet --info
-          dotnet --list-sdks
-          dotnet --list-runtimes
+        run: dotnet --info; dotnet --list-sdks; dotnet --list-runtimes
 
       - name: Cache NuGet
         uses: actions/cache@v4
@@ -42,37 +39,21 @@ jobs:
       - name: Install MAUI workloads
         run: dotnet workload install maui maui-windows
 
-      # If you ever see NU1102 about Mono runtime packs, uncomment the next step, push, and rerun:
-      # - name: Add dotnet-public feed (workaround for certain packs)
+      # If you hit NU1102/NETSDK1112 for runtime/workload packs, temporarily add dotnet-public:
+      # - name: Add dotnet-public feed (workaround for some packs)
       #   run: dotnet nuget add source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json --name dotnet-public --store-password-in-clear-text
 
       - name: Restore (Windows target only)
-        run: |
-          dotnet restore .\MauiApp2\MauiApp2.csproj `
-            -p:TargetFramework=net10.0-windows10.0.19041.0 `
-            -p:RuntimeIdentifier=win-x64
+        run: dotnet restore .\MauiApp2\MauiApp2.csproj -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
 
       - name: Build (Windows)
-        run: |
-          dotnet build .\MauiApp2\MauiApp2.csproj `
-            -c Release `
-            -p:TargetFramework=net10.0-windows10.0.19041.0 `
-            -p:RuntimeIdentifier=win-x64 `
-            --no-restore
+        run: dotnet build .\MauiApp2\MauiApp2.csproj -c Release -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64 --no-restore
 
       - name: Publish (Windows, R2R, no symbol package)
-        run: |
-          dotnet publish .\MauiApp2\MauiApp2.csproj `
-            -c Release `
-            -p:TargetFramework=net10.0-windows10.0.19041.0 `
-            -p:RuntimeIdentifier=win-x64 `
-            -p:PublishReadyToRun=true `
-            -p:AppxSymbolPackageEnabled=false `
-            --no-restore
+        run: dotnet publish .\MauiApp2\MauiApp2.csproj -c Release -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64 -p:PublishReadyToRun=true -p:AppxSymbolPackageEnabled=false --no-restore
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: mauiapp2-win-x64
-          path: |
-            .\MauiApp2\bin\Release\net10.0-windows10.0.19041.0\win-x64\publish\
+          path: .\MauiApp2\bin\Release\net10.0-windows10.0.19041.0\win-x64\publish\
