@@ -59,15 +59,11 @@ jobs:
       - name: Workload restore (Windows only)
         run: dotnet workload restore .\MauiApp2\MauiApp2.csproj -p:TargetFrameworks=net10.0-windows10.0.19041.0 -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
       
-      # Restore for Windows TFM + RID, with both feeds visible (nuget + dotnet-public)
+      # Restore (Windows target only)
       - name: Restore (Windows target only)
         run: dotnet restore .\MauiApp2\MauiApp2.csproj -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64 -p:RestoreSources="https://api.nuget.org/v3/index.json;https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json" -p:WorkloadRestore=true
       
-      # Build WITH RID (allow restore so MSBuild can fetch the runtime pack if needed)
-      - name: Build (Windows)
-        run: dotnet build .\MauiApp2\MauiApp2.csproj -c Release -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
-      
-      # Publish WITH RID (R2R on; suppress .appxsym warning)
+      # Publish (Windows, R2R, no symbol package) — compiles & packages
       - name: Publish (Windows, R2R, no symbol package)
         run: dotnet publish .\MauiApp2\MauiApp2.csproj -c Release -p:TargetFramework=net10.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64 -p:PublishReadyToRun=true -p:AppxSymbolPackageEnabled=false
 
