@@ -3,3 +3,7 @@
 *.user
 *.suo
 .vs/
+
+.nuget-packages/
+
+.nuget-packages/
